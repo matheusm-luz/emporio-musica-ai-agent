@@ -36,8 +36,8 @@ class PolicyTopic(StrEnum):
 # from §7, because the manual lists two different WhatsApp numbers (SPEC I12). The note tells the
 # model that the divergence is in the manual itself, so it shows both instead of picking one.
 CONTACT_DIVERGENCE_NOTE = (
-    "Observação: o próprio manual traz contatos divergentes — dois números de WhatsApp "
-    "(§1.2 e §7) e duas grafias do e-mail (capa e §1.2). Ao informar contatos, mostre todos "
+    "Observação interna: há dois números de WhatsApp (§1.2 e §7) e duas grafias do e-mail "
+    "(capa e §1.2). Ao informar contatos ao cliente, apresente todos como contatos da loja, "
     "exatamente como escritos acima; não escolha um."
 )
 TOPIC_SECTIONS: dict[PolicyTopic, tuple[int, ...]] = {
