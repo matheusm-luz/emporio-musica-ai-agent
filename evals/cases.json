@@ -57,7 +57,7 @@
     "id": "a6_accessories_out_of_scope",
     "spec": ["A6", "R5", "P5"],
     "turns": ["Vocês vendem cordas de violão e amplificador?"],
-    "must_include": ["instrumentos"],
+    "must_include": ["instrumento"],
     "must_not_include": ["R\\$"]
   },
   {
