@@ -56,6 +56,7 @@ SCENARIOS = [
             "E qual o WhatsApp de vocês?",
         ],
         "expect_tools": ["get_store_policy"],
+        "forbid_tools": ["search_products"],
         "must_include": ["3341-4444", "3321-4500"],
     },
     {
@@ -88,7 +89,9 @@ SCENARIOS = [
             "Entendi. E se o violão apresentar algum defeito, o que eu faço?",
         ],
         "expect_tools": ["lookup_orders", "get_store_policy"],
+        "forbid_tools": ["create_support_ticket"],  # a hypothetical question opens no ticket
         "must_include": ["fabricante|garantia"],
+        "must_not_include": ["alguns fabricantes"],  # the manual says "a maioria" (§8.2)
     },
     {
         "file": "05_out_of_scope_and_promotions_english.md",
@@ -134,10 +137,13 @@ def render(scenario: dict, model: str, transcript: list[tuple[str, Reply]]) -> s
         if reply.tool_calls:
             lines.append(f"<details><summary>🔧 Tools called ({len(reply.tool_calls)})</summary>")
             lines.append("")
-            for call in reply.tool_calls:
-                output = call.output if len(call.output) <= 600 else call.output[:600] + " …"
+            for (
+                call
+            ) in reply.tool_calls:  # full outputs: every fact in a reply has a visible source
+                fence = "json" if call.output.lstrip().startswith("{") else "text"
+                body = "\n".join(f"  {line}" for line in call.output.splitlines())
                 lines.append(f"- `{call.name}` `{call.args}`")
-                lines.append(f"  ```json\n  {output}\n  ```")
+                lines.append(f"  ```{fence}\n{body}\n  ```")
             lines += ["", "</details>", ""]
         lines.append(f"**🎸 Agent:** {reply.text}")
         lines += ["", "---"]
