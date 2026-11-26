@@ -30,8 +30,12 @@ def build_chat_model(settings: Settings) -> BaseChatModel:
         from langchain_openai import ChatOpenAI
 
         # Low latency for chat: no reasoning tokens. On gpt-6-luna, Chat Completions supports
-        # function calling only with reasoning_effort="none".
-        return ChatOpenAI(model=model, reasoning_effort="none")
+        # function calling only with reasoning_effort="none". With parallel tool calls it added
+        # an argument-less search_products next to the real calls (e.g. "address + Saturday
+        # hours?"), so calls are made one at a time.
+        return ChatOpenAI(
+            model=model, reasoning_effort="none", model_kwargs={"parallel_tool_calls": False}
+        )
 
     if provider == "gemini":
         from langchain_openai import ChatOpenAI

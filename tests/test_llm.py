@@ -19,6 +19,7 @@ def test_openai_model_disables_reasoning(monkeypatch: pytest.MonkeyPatch) -> Non
     model = build_chat_model(Settings(llm_model="openai:gpt-6-luna"))
     assert isinstance(model, ChatOpenAI)
     assert (model.model_name, model.reasoning_effort) == ("gpt-6-luna", "none")
+    assert model.model_kwargs == {"parallel_tool_calls": False}
 
 
 def test_gemini_uses_the_openai_compatible_endpoint(monkeypatch: pytest.MonkeyPatch) -> None:
