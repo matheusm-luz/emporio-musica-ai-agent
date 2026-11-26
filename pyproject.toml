@@ -1,0 +1,46 @@
+[project]
+name = "emporio-agent"
+version = "0.1.0"
+description = "Customer-service agent prototype for Empório da Música (Artefact AI Engineer case)"
+authors = [{ name = "Matheus Monteiro da Luz" }]
+requires-python = ">=3.12"
+dependencies = [
+    "gradio>=6.32.0",
+    "langchain>=1.5.2",
+    "langchain-ollama>=1.2.0",
+    "langchain-openai>=1.8.5",
+    "langgraph>=1.2.24",
+    "langgraph-checkpoint-postgres>=3.2.1",
+    "pandas>=3.1.1",
+    "psycopg[binary,pool]>=3.3.9",
+    "pypdf>=7.1.1",
+    "python-dotenv>=1.2.4",
+    "rapidfuzz>=3.14.6",
+    "rich>=15.0.0",
+    "tzdata>=2026.6",
+]
+
+[project.scripts]
+emporio-chat = "emporio_agent.cli:main"
+emporio-web = "emporio_agent.web:main"
+
+[build-system]
+requires = ["uv_build>=0.12.22,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "ruff>=0.17.6",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

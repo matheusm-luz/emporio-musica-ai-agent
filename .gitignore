@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# Local configuration and secrets
+.env
+
+# Claude Code local-only settings
+.claude/settings.local.json
+
+# Hiring-process statement: not needed to run the project, kept out of the public repo
+desafio_tecnico_ai_eng_artefact.pdf
+
+# Submission artifact (sent via Google Forms, not part of the codebase)
+submission/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
