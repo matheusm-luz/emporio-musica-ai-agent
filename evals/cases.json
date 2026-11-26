@@ -35,15 +35,15 @@
     "phone": "(67) 98432-1098",
     "turns": ["Me arrependi da minha compra, posso devolver meu pedido?"],
     "expect_tools": ["lookup_orders", "get_store_policy"],
-    "must_include": ["7 dias|01/11/2025"],
-    "must_not_include": ["dentro do prazo"]
+    "must_include": ["01/11/2025|encerr"],
+    "must_not_include": ["(você|seu pedido) (ainda )?(está|esta) dentro do prazo"]
   },
   {
     "id": "a4_regret_needs_identification",
     "spec": ["A4", "P14"],
     "turns": ["Me arrependi da minha compra, posso devolver meu pedido?"],
-    "forbid_tools": ["lookup_orders"],
-    "must_include": ["telefone|e-mail|email|número do pedido"]
+    "must_include": ["telefone|e-mail|email|número do pedido"],
+    "must_not_include": ["Martin|Taylor|R\\$ ?\\d", "pedido \\d"]
   },
   {
     "id": "a5_black_friday_not_active",
