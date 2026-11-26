@@ -11,7 +11,7 @@ Built for the Artefact **Senior AI Engineer** technical case.
 |---|---|
 | **Stack** | Python 3.12 · LangGraph · LangChain tools · Ollama (local) / OpenAI / Gemini (cloud) · Postgres · Gradio · uv |
 | **Interfaces** | Terminal chat (`emporio-chat`) and web chat (`emporio-web`) |
-| **Quality** | 83 offline unit tests · 20-case LLM eval suite run on 4 models · CI on every PR |
+| **Quality** | 85 offline unit tests · 20-case LLM eval suite run on 5 models · CI on every PR |
 | **Examples** | [`examples/`](examples/) — 5 generated conversations |
 
 ---
@@ -47,7 +47,7 @@ cp .env.example .env        # then pick ONE model option below
 | Option | `.env` | Cost | Notes |
 |--------|--------|------|-------|
 | **A. OpenAI** (fastest to set up) | `LLM_MODEL=openai:gpt-6-luna`<br>`OPENAI_API_KEY=sk-...` | paid API | "Production" model |
-| **B. Gemini free tier** (cloud, no credit card) | `LLM_MODEL=gemini:gemini-3.8-flash`<br>`GEMINI_API_KEY=...` | free | Key from [Google AI Studio](https://aistudio.google.com). On the free tier Google may use the content to improve its products — fine for this fictional data, not for real customers |
+| **B. Gemini free tier** (cloud, no credit card) | `LLM_MODEL=gemini:gemini-3.5-flash-lite`<br>`GEMINI_API_KEY=...` | free | Key from [Google AI Studio](https://aistudio.google.com). `gemini-3.8-flash` also works but often answers 503 ("high demand") on the free tier. On the free tier Google may use the content to improve its products — fine for this fictional data, not for real customers |
 | **C. Ollama in Docker** (NVIDIA GPU) | `LLM_MODEL=ollama:gemma4:12b` | free | `docker compose --profile ollama-gpu up -d` — pulls the model on first start (~8 GB) |
 | **D. Ollama in Docker** (CPU only) | `LLM_MODEL=ollama:gemma4:12b` | free | `docker compose --profile ollama up -d` — works anywhere, slow |
 | **E. Native Ollama** (best on macOS) | `LLM_MODEL=ollama:gemma4:12b` | free | [Install Ollama](https://ollama.com/download), then `ollama pull gemma4:12b` |
@@ -67,7 +67,7 @@ uv run emporio-web                                    # web chat on http://local
 Development:
 
 ```bash
-uv run pytest                                         # 83 offline unit tests (no LLM, no network)
+uv run pytest                                         # 85 offline unit tests (no LLM, no network)
 uv run python evals/run_evals.py --model <provider:model>   # LLM behaviour suite → evals/results/
 uv run python scripts/run_examples.py --model <provider:model>  # regenerate examples/
 ```
@@ -157,7 +157,8 @@ Each decision below lists the alternatives considered. The full requirement trac
   on purpose: they are shut down on 2026-12-11, days after this delivery.
 - **Free cloud: Google Gemini (AI Studio free tier)** through its OpenAI-compatible endpoint — the
   same `ChatOpenAI` client, no extra dependency — so an evaluator can try a cloud model without a
-  GPU or a paid key. Checked alternatives: Groq's free tier (8K tokens/minute is below what a single
+  GPU or a paid key. A small subclass sends Gemini's *thought signatures* back with each tool call
+  (Gemini 3+ rejects the follow-up request without them and `langchain-openai` drops the field). Checked alternatives: Groq's free tier (8K tokens/minute is below what a single
   agent turn uses), OpenRouter `:free` models (50 requests/day), GitHub Models (retired in July 2026).
 
 ### 3.3 Retrieval architecture
@@ -219,7 +220,7 @@ order lookup without asking again).
 
 Two layers:
 
-- **Unit tests (83, offline, run in CI):** data loading and every data-quality finding, pricing and
+- **Unit tests (85, offline, run in CI):** data loading and every data-quality finding, pricing and
   installment tiers (with edge values), promotion/PIX precedence, opening-hours messages, policy
   parsing, manual ↔ code consistency, order privacy, and the agent loop with a scripted chat model.
 - **LLM eval suite** ([`evals/cases.json`](evals/cases.json), 20 cases traced to SPEC IDs): the
@@ -237,7 +238,7 @@ Two layers:
 | `ollama:gemma4:12b` — **default local** (8 GB) | RTX 5080 16 GB | **20/20** | 3.3 s | — |
 | `ollama:gpt-oss:20b` (14 GB) | RTX 5080 16 GB | 18/20 | 2.1 s | `p9_promo_installments`: installments quoted without the promotional price (fails in most runs); `a4_regret_needs_identification`: generic policy answer without asking who the customer is (passed 4/4 re-runs) |
 | `ollama:qwen3:14b` (9 GB) | RTX 5080 16 GB | 18/20 | 6.4 s | `a4_regret_identified_customer`: answered without looking up the order; `a4_regret_needs_identification`: did not ask for identification |
-| `gemini:gemini-3.8-flash` | Google AI Studio free tier | not run | — | requires a `GEMINI_API_KEY`; the preset is unit-tested only |
+| `gemini:gemini-3.5-flash-lite` | Google AI Studio free tier | **20/20** | 5.6 s | — (`gemini-3.8-flash` not evaluated: the free tier answered 503 "high demand" during the whole run day) |
 
 Full reports with the transcripts of every failed case: [`evals/results/`](evals/results/).
 
@@ -358,6 +359,9 @@ toolkit (e.g. GitHub Spec Kit, too much ceremony for a 2.5-day case):
    (→ `parallel_tool_calls=False`); a second false "registered" draft could still reach the
    customer (→ fixed safe answer); missing manual ↔ code tests for deadlines, SLA and installment
    tiers (→ added); the CLI reported Postgres history after falling back to memory (→ fixed).
+   Running the Gemini preset end to end (until then only unit-tested) showed that every
+   tool-using conversation failed with HTTP 400 — Gemini 3+ requires its thought signatures back
+   (→ `GeminiChatOpenAI` subclass + unit tests, then the full suite: 20/20).
 
 What I reviewed by hand: the spec and interpretations, every data-quality decision, tool outputs
 against the CSVs/manual (prices, deadlines), the prompt, and every example transcript.
@@ -379,7 +383,7 @@ src/emporio_agent/
   graph.py       LangGraph agent ⇄ tools loop
   agent.py       StoreAgent facade + persistence selection
   cli.py, web.py interfaces
-tests/           83 offline unit tests
+tests/           85 offline unit tests
 evals/           LLM eval suite + results per model
 examples/        generated example conversations
 scripts/         example generator
