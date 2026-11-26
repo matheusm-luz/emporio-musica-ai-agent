@@ -4,7 +4,7 @@ Each rule cites the manual section it implements (see docs/SPEC.md).
 """
 
 from dataclasses import dataclass
-from datetime import datetime, time, timedelta
+from datetime import date, datetime, time, timedelta
 from decimal import ROUND_HALF_UP, Decimal
 from enum import StrEnum
 
@@ -26,6 +26,11 @@ OPENING_HOURS: dict[int, tuple[time, time]] = {
     5: (time(9), time(13)),
 }
 WEEKDAY_NAMES_PT = ("segunda", "terça", "quarta", "quinta", "sexta", "sábado", "domingo")
+
+# Deadlines (calendar days). The receipt date is the order's estimated delivery (SPEC I5).
+RETURN_WINDOW_DAYS = 7  # §4.1 right of regret, from receipt (online purchases)
+DEFECT_EXCHANGE_DAYS = 30  # §4.2 defect exchange, from purchase
+LEGAL_WARRANTY_DAYS = 90  # §8.1 legal warranty, from receipt
 
 
 def money(value: Decimal) -> Decimal:
@@ -111,6 +116,16 @@ def quote_price(list_price: Decimal, active_promotions: list[Promotion]) -> Pric
         pix_price=None if promotion else money(final * (1 - PIX_DISCOUNT)),
         installments=installments,
         installment_value=money(final / installments),
+    )
+
+
+def deadline_status(start: date, days: int, today: date) -> str:
+    """'dentro do prazo (até 01/11/2025)' or 'prazo encerrado em 01/11/2025'."""
+    end = start + timedelta(days=days)
+    return (
+        f"dentro do prazo (até {end:%d/%m/%Y})"
+        if today <= end
+        else f"prazo encerrado em {end:%d/%m/%Y}"
     )
 
 
