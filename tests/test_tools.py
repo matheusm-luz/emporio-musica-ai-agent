@@ -39,6 +39,14 @@ def test_search_ranks_by_relevance_tier(catalog: Catalog) -> None:
     assert {p["id"] for p in result["produtos"]} == {122, 123, 126, 129}
 
 
+def test_search_reports_named_unavailable_items(catalog: Catalog) -> None:
+    result = catalog.search(query="Shelby SN-7C")
+    assert result["total_encontrado"] == 0
+    assert result["itens_indisponiveis_encontrados"] == [
+        {"nome": "Shelby SN-7C 7 Cordas Nylon Natural", "disponibilidade": "descontinuado"}
+    ]
+
+
 def test_search_category_without_products(catalog: Catalog) -> None:
     result = catalog.search(category="saxofone")
     assert result["total_encontrado"] == 0

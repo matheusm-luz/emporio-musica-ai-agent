@@ -172,6 +172,19 @@ class Catalog:
         unavailable = [p for p in scores if self.availability(p) is not Availability.AVAILABLE]
         if not include_unavailable:
             scores = {p: s for p, s in scores.items() if p not in unavailable}
+        # A named item that is out of stock / discontinued must be reported as such (§7.3),
+        # not silently filtered out.
+        unavailable_named = (
+            [
+                {
+                    "nome": self.store.product(p)["name"],
+                    "disponibilidade": str(self.availability(p)),
+                }
+                for p in unavailable[:3]
+            ]
+            if query and not include_unavailable
+            else []
+        )
 
         ranked = sorted(scores, key=lambda p: (-scores[p], final_price(p)))
         result: dict[str, Any] = {
@@ -182,6 +195,8 @@ class Catalog:
             result["observacao"] = f"Mostrando {limit} de {len(ranked)}; refine a busca."
         if unavailable and not include_unavailable:
             result["indisponiveis_omitidos"] = len(unavailable)
+        if unavailable_named:
+            result["itens_indisponiveis_encontrados"] = unavailable_named
         if not ranked:
             result["observacao"] = "Nenhum produto disponível com esses critérios."
         return result
