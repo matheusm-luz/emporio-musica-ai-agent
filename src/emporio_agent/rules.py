@@ -31,6 +31,7 @@ WEEKDAY_NAMES_PT = ("segunda", "terça", "quarta", "quinta", "sexta", "sábado",
 RETURN_WINDOW_DAYS = 7  # §4.1 right of regret, from receipt (online purchases)
 DEFECT_EXCHANGE_DAYS = 30  # §4.2 defect exchange, from purchase
 LEGAL_WARRANTY_DAYS = 90  # §8.1 legal warranty, from receipt
+COMPLAINT_SLA = "24 horas úteis"  # §7.3 reply deadline for complaints
 
 
 def money(value: Decimal) -> Decimal:

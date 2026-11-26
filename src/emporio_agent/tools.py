@@ -19,6 +19,7 @@ from rapidfuzz import fuzz
 from emporio_agent.data import StoreData, normalize, phone_digits
 from emporio_agent.policies import PolicyManual, PolicyTopic
 from emporio_agent.rules import (
+    COMPLAINT_SLA,
     DEFECT_EXCHANGE_DAYS,
     LEGAL_WARRANTY_DAYS,
     RETURN_WINDOW_DAYS,
@@ -479,7 +480,7 @@ def build_tools(
         ticket = tickets.create(kind, summary, customer_contact, thread_id, now)
         result = {"protocolo": ticket.protocol, "status_loja": store_status(now)}
         if kind == "reclamacao":
-            result["prazo_retorno"] = "até 24 horas úteis (política 7.3)"
+            result["prazo_retorno"] = f"até {COMPLAINT_SLA} (política 7.3)"
         else:
             result["proximo_passo"] = (
                 "um atendente humano dará continuidade no horário de atendimento"
