@@ -97,3 +97,4 @@ Anything not stated in S1–S4 is an **interpretation** and is listed in [Interp
 | N3 | Conversation history persisted in Postgres, with an in-memory fallback when no database is configured |
 | N4 | Business rules (pricing, installments, availability, privacy) are deterministic Python and unit-tested |
 | N5 | LLM behaviour (tool choice, key facts, forbidden claims) is measured by an eval suite |
+| N6 | Invariants whose violation would deceive a customer (e.g. a complaint "registered" with an invented protocol) are enforced in code, not only requested in the prompt |
