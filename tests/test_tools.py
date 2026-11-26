@@ -45,6 +45,8 @@ def test_search_reports_named_unavailable_items(catalog: Catalog) -> None:
     assert result["itens_indisponiveis_encontrados"] == [
         {"nome": "Shelby SN-7C 7 Cordas Nylon Natural", "disponibilidade": "descontinuado"}
     ]
+    alternatives = result["alternativas_disponiveis"]
+    assert alternatives and all(a["disponibilidade"] == "disponível" for a in alternatives)
 
 
 def test_search_category_without_products(catalog: Catalog) -> None:

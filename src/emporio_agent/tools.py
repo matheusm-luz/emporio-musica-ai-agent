@@ -197,6 +197,8 @@ class Catalog:
             result["indisponiveis_omitidos"] = len(unavailable)
         if unavailable_named:
             result["itens_indisponiveis_encontrados"] = unavailable_named
+            if not ranked:  # the customer asked for something unavailable: suggest (§7.3)
+                result["alternativas_disponiveis"] = self.alternatives(unavailable[0])
         if not ranked:
             result["observacao"] = "Nenhum produto disponível com esses critérios."
         return result
