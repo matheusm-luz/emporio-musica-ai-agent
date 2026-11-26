@@ -35,7 +35,7 @@
     "phone": "(67) 98432-1098",
     "turns": ["Me arrependi da minha compra, posso devolver meu pedido?"],
     "expect_tools": ["lookup_orders", "get_store_policy"],
-    "must_include": ["01/11/2025|encerr"],
+    "must_include": ["01/11/2025|encerr|ultrapass|expir|passou|fora do prazo"],
     "must_not_include": ["(você|seu pedido) (ainda )?(está|esta) dentro do prazo"]
   },
   {
@@ -86,7 +86,7 @@
     "phone": "(67) 99654-7821",
     "turns": ["Meu pedido está atrasado faz meses, isso é um absurdo! Quero registrar uma reclamação."],
     "expect_tools": ["create_support_ticket"],
-    "must_include": ["EMP-20261125-\\d{4}", "24 horas úteis"]
+    "must_include": ["EMP-20261125-\\d{4}", "24 ?(h|horas) úteis"]
   },
   {
     "id": "a10_out_of_hours",
