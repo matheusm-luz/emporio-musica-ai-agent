@@ -1,0 +1,2 @@
+# Original source files must stay byte-identical in every clone (see tests/test_sources.py).
+data/** -text
