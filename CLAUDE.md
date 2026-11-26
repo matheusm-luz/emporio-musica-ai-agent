@@ -24,8 +24,10 @@ Requirements live in `docs/SPEC.md` — read it before changing behaviour. Data 
 
 - `src/emporio_agent/` — `config` (env) · `llm` (model factory) · `data` (CSV loading/cleaning) ·
   `rules` (business rules) · `policies` (PDF → sections) · `tools` (LangChain tools) ·
-  `tickets` (support tickets) · `prompts` (system prompt) · `graph` (LangGraph) · `cli` · `web`
-- `tests/` — unit tests, no LLM calls. `evals/` — LLM behaviour suite. `examples/` — generated transcripts.
+  `tickets` (support tickets) · `prompts` (system prompt) · `graph` (LangGraph) ·
+  `agent` (facade + persistence used by every interface) · `cli` · `web`
+- `tests/` — unit tests, no LLM calls. `evals/` — LLM behaviour suite. `examples/` — generated transcripts
+  (`scripts/run_examples.py`).
 
 ## Commands
 
@@ -44,4 +46,4 @@ uv run python scripts/run_examples.py     # regenerate examples/
 
 - Conventional Commits (`feat(tools): ...`), small commits per milestone, never force-push.
 - Type hints everywhere; small pure functions; tests next to every business rule.
-- Model is configured only via `LLM_MODEL="<provider>:<model>"` (`ollama:...` or `openai:...`).
+- Model is configured only via `LLM_MODEL="<provider>:<model>"` (`ollama:...`, `openai:...` or `gemini:...`).
