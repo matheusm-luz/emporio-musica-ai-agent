@@ -51,6 +51,7 @@ class StoreAgent:
         model: BaseChatModel | None = None,
     ) -> None:
         self.settings = settings
+        self.history_backend = "Postgres" if isinstance(checkpointer, PostgresSaver) else "memória"
         self.store = load_store_data()
         self.manual = PolicyManual.load()
         tools = build_tools(self.store, self.manual, tickets, settings.now)

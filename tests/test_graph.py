@@ -12,7 +12,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 
 from emporio_agent.agent import StoreAgent
 from emporio_agent.config import STORE_TZ, Settings
-from emporio_agent.graph import recent_history
+from emporio_agent.graph import CLAIM_PATTERN, SAFE_FALLBACK, recent_history
 from emporio_agent.tickets import InMemoryTicketStore
 
 
@@ -116,8 +116,22 @@ def test_claim_check_does_not_loop() -> None:
         [AIMessage(content="Protocolo #1."), AIMessage(content="Protocolo #2, de novo.")]
     )
     reply = agent.reply("thread-d", "Quero reclamar")
-    assert reply.text == "Protocolo #2, de novo."  # one correction per turn, then it stops
+    assert reply.text == SAFE_FALLBACK  # one correction per turn, then a fixed safe answer
     assert len(model.received) == 2
+    history = [text for _, text in agent.history("thread-d")]
+    assert not any("Protocolo #" in text for text in history)  # no false claim is persisted
+
+
+def test_history_backend_reports_the_saver_in_use() -> None:
+    agent, _ = _agent([])
+    assert agent.history_backend == "memória"  # shown by the CLI, even if DATABASE_URL is set
+
+
+def test_claim_pattern_covers_forwarding_and_english() -> None:
+    for text in ("Encaminhei seu caso.", "Your complaint was registered.", "I've opened a case"):
+        assert CLAIM_PATTERN.search(text), text
+    for text in ("Posso encaminhar seu caso?", "Want me to open a ticket for you?"):
+        assert not CLAIM_PATTERN.search(text), text
 
 
 def test_answer_without_claims_ends_normally() -> None:
