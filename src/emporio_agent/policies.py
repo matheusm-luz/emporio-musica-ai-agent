@@ -33,7 +33,13 @@ class PolicyTopic(StrEnum):
 
 
 # Topic -> manual sections. "sobre_contato" also carries the cover and the WhatsApp channel line
-# from §7, because the manual lists two different WhatsApp numbers (SPEC I12).
+# from §7, because the manual lists two different WhatsApp numbers (SPEC I12). The note tells the
+# model that the divergence is in the manual itself, so it shows both instead of picking one.
+CONTACT_DIVERGENCE_NOTE = (
+    "Observação: o próprio manual traz contatos divergentes — dois números de WhatsApp "
+    "(§1.2 e §7) e duas grafias do e-mail (capa e §1.2). Ao informar contatos, mostre todos "
+    "exatamente como escritos acima; não escolha um."
+)
 TOPIC_SECTIONS: dict[PolicyTopic, tuple[int, ...]] = {
     PolicyTopic.SOBRE_CONTATO: (0, 1),
     PolicyTopic.HORARIO: (2,),
@@ -122,4 +128,5 @@ class PolicyManual:
         parts = [self.sections[n].render() for n in TOPIC_SECTIONS[topic]]
         if topic is PolicyTopic.SOBRE_CONTATO:
             parts.append(f"## 7. Atendimento via WhatsApp (trecho)\n{self.whatsapp_channel_line()}")
+            parts.append(CONTACT_DIVERGENCE_NOTE)
         return "\n\n".join(parts)
