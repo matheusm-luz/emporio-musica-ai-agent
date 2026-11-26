@@ -18,70 +18,69 @@
 
 - `lookup_orders` `{'customer_contact': '(67) 98432-1098', 'order_id': None}`
   ```json
-  {"cliente": "Pedro", "pedidos": [{"pedido": 19, "data_compra": "22/02/2026", "status": "cancelado", "itens": ["1x Taylor 214ce Elétrico Aço Natural"], "total": "R$ 7.499,00", "pagamento": "boleto bancário", "observacao": "Pagamento não confirmado dentro do prazo"}, {"pedido": 1, "data_compra": "15/10/2025", "status": "entregue", "itens": ["1x Martin D-28 Dreadnought Natural"], "total": "R$ 11.499,00", "pagamento": "PIX", "codigo_rastreio": "BRAB1234567BR", "recebimento_considerado": "25/10/2025 (data prevista de entrega)", "prazos": {"arrependimento_7_dias_apos_recebimento": "prazo encerrado e …
+  {"cliente": "Pedro", "pedidos": [{"pedido": 19, "data_compra": "22/02/2026", "status": "cancelado", "itens": ["1x Taylor 214ce Elétrico Aço Natural"], "total": "R$ 7.499,00", "pagamento": "boleto bancário", "observacao": "Pagamento não confirmado dentro do prazo"}, {"pedido": 1, "data_compra": "15/10/2025", "status": "entregue", "itens": ["1x Martin D-28 Dreadnought Natural"], "total": "R$ 11.499,00", "pagamento": "PIX", "codigo_rastreio": "BRAB1234567BR", "recebimento_considerado": "25/10/2025 (data prevista de entrega)", "prazos": {"arrependimento_7_dias_apos_recebimento": "prazo encerrado em 01/11/2025", "troca_por_defeito_30_dias_apos_compra": "prazo encerrado em 14/11/2025", "garantia_legal_90_dias_apos_recebimento": "prazo encerrado em 23/01/2026"}}]}
   ```
 - `get_store_policy` `{'topic': 'trocas_devolucoes'}`
-  ```json
+  ```text
   ## 4. Política de Trocas e Devoluções
-A Empório da Música segue as diretrizes do Código de Defesa do Consumidor (Lei nº 8.078/90) e
-oferece condições claras para trocas e devoluções.
-4.1 Direito de Arrependimento (Compras Online)
-- O cliente pode solicitar a devolução em até 7 (sete) dias corridos após o recebimento do produto, sem necessidade de justificativa.
-- O produto deve estar em sua embalagem original, sem sinais de uso, com todos os acessórios e manuais.
-- O reembolso será realizado na mesma forma de pagamento original em até 10 dias úteis.
-- O frete de devolução é por conta da loja e …
+  A Empório da Música segue as diretrizes do Código de Defesa do Consumidor (Lei nº 8.078/90) e
+  oferece condições claras para trocas e devoluções.
+  4.1 Direito de Arrependimento (Compras Online)
+  - O cliente pode solicitar a devolução em até 7 (sete) dias corridos após o recebimento do produto, sem necessidade de justificativa.
+  - O produto deve estar em sua embalagem original, sem sinais de uso, com todos os acessórios e manuais.
+  - O reembolso será realizado na mesma forma de pagamento original em até 10 dias úteis.
+  - O frete de devolução é por conta da loja em caso de arrependimento.
+  4.2 Trocas por Defeito
+  - Produtos com defeito de fabricação podem ser trocados em até 30 (trinta) dias corridos após a compra.
+  - Após os 30 dias, o cliente deve acionar a garantia diretamente com o fabricante. A Empório da Música pode intermediar o processo mediante solicitação.
+  - Danos causados por mau uso, quedas, exposição a umidade excessiva ou modificações não autorizadas não são cobertos.
+  4.3 Trocas por Preferência
+  - Trocas por preferência (cor, modelo, tamanho) são permitidas em até 7 dias, mediante disponibilidade do produto desejado.
+  - O produto deve estar em perfeito estado e na embalagem original.
+  - Diferenças de valor serão cobradas ou reembolsadas conforme o caso.
+  4.4 Itens Não Elegíveis para Troca
+  - Instrumentos com personalização ou ajustes sob encomenda (setup, regulagem especial).
+  - Produtos adquiridos em promoções de liquidação com aviso explícito de "venda final".
+  - Boquilhas de instrumentos de sopro, por questões de higiene.
   ```
 
 </details>
 
-**🎸 Agent:** Oi, Pedro! Consultei seus pedidos: o pedido nº 19 está cancelado porque o pagamento não foi confirmado, e o pedido nº 1 foi recebido em 25/10/2025. Para esse pedido, o prazo de arrependimento terminou em 01/11/2025, então já não está dentro do prazo de devolução por arrependimento.
+**🎸 Agent:** Oi, Pedro! Consultei seus pedidos: o pedido nº 19 foi cancelado porque o pagamento não foi confirmado, então não há uma compra entregue para devolver. O pedido nº 1 foi recebido em 25/10/2025, e o prazo de arrependimento de 7 dias encerrou em 01/11/2025.
 
-Se você está falando de outra compra, me passe o número do pedido para eu conferir. Sou a assistente virtual da Empório da Música — posso ajudar com mais alguma coisa?
+Se você está falando de outra compra, me passe o número do pedido para eu verificar.
 
 ---
 
 **👤 Customer:** Entendi. E se o violão apresentar algum defeito, o que eu faço?
 
-<details><summary>🔧 Tools called (4)</summary>
+<details><summary>🔧 Tools called (2)</summary>
 
 - `lookup_orders` `{'customer_contact': '(67) 98432-1098', 'order_id': None}`
   ```json
-  {"cliente": "Pedro", "pedidos": [{"pedido": 19, "data_compra": "22/02/2026", "status": "cancelado", "itens": ["1x Taylor 214ce Elétrico Aço Natural"], "total": "R$ 7.499,00", "pagamento": "boleto bancário", "observacao": "Pagamento não confirmado dentro do prazo"}, {"pedido": 1, "data_compra": "15/10/2025", "status": "entregue", "itens": ["1x Martin D-28 Dreadnought Natural"], "total": "R$ 11.499,00", "pagamento": "PIX", "codigo_rastreio": "BRAB1234567BR", "recebimento_considerado": "25/10/2025 (data prevista de entrega)", "prazos": {"arrependimento_7_dias_apos_recebimento": "prazo encerrado e …
+  {"cliente": "Pedro", "pedidos": [{"pedido": 19, "data_compra": "22/02/2026", "status": "cancelado", "itens": ["1x Taylor 214ce Elétrico Aço Natural"], "total": "R$ 7.499,00", "pagamento": "boleto bancário", "observacao": "Pagamento não confirmado dentro do prazo"}, {"pedido": 1, "data_compra": "15/10/2025", "status": "entregue", "itens": ["1x Martin D-28 Dreadnought Natural"], "total": "R$ 11.499,00", "pagamento": "PIX", "codigo_rastreio": "BRAB1234567BR", "recebimento_considerado": "25/10/2025 (data prevista de entrega)", "prazos": {"arrependimento_7_dias_apos_recebimento": "prazo encerrado em 01/11/2025", "troca_por_defeito_30_dias_apos_compra": "prazo encerrado em 14/11/2025", "garantia_legal_90_dias_apos_recebimento": "prazo encerrado em 23/01/2026"}}]}
   ```
 - `get_store_policy` `{'topic': 'garantia'}`
-  ```json
+  ```text
   ## 8. Garantia
-8.1 Garantia Legal
-Conforme o Código de Defesa do Consumidor, todos os produtos possuem garantia legal de 90
-(noventa) dias contra defeitos de fabricação, contados a partir da data de recebimento pelo cliente.
-8.2 Garantia do Fabricante
-Além da garantia legal, a maioria dos fabricantes oferece garantia própria que pode variar de 6
-meses a 2 anos. Os prazos e condições específicos estão detalhados no certificado de garantia que
-acompanha cada produto.
-8.3 O que Não Cobre a Garantia
-- Desgaste natural de peças (trastes, cordas, feltros, palhetas de sopro).
-- Danos por mau uso, que …
-  ```
-- `get_store_policy` `{'topic': 'trocas_devolucoes'}`
-  ```json
-  ## 4. Política de Trocas e Devoluções
-A Empório da Música segue as diretrizes do Código de Defesa do Consumidor (Lei nº 8.078/90) e
-oferece condições claras para trocas e devoluções.
-4.1 Direito de Arrependimento (Compras Online)
-- O cliente pode solicitar a devolução em até 7 (sete) dias corridos após o recebimento do produto, sem necessidade de justificativa.
-- O produto deve estar em sua embalagem original, sem sinais de uso, com todos os acessórios e manuais.
-- O reembolso será realizado na mesma forma de pagamento original em até 10 dias úteis.
-- O frete de devolução é por conta da loja e …
-  ```
-- `create_support_ticket` `{'kind': 'atendimento_humano', 'summary': 'Cliente pergunta como proceder se o violão apresentar defeito. Pedido entregue identificado: nº 1, Martin D-28, recebido em 25/10/2025; prazos registrados de troca por defeito e garantia legal estão encerrados. Solicita orientação sobre possível garantia do fabricante/intermediação.', 'customer_contact': '(67) 98432-1098'}`
-  ```json
-  {"protocolo": "EMP-20261125-0001", "status_loja": "A loja está ABERTA agora (hoje até 18:00).", "proximo_passo": "um atendente humano dará continuidade no horário de atendimento"}
+  8.1 Garantia Legal
+  Conforme o Código de Defesa do Consumidor, todos os produtos possuem garantia legal de 90
+  (noventa) dias contra defeitos de fabricação, contados a partir da data de recebimento pelo cliente.
+  8.2 Garantia do Fabricante
+  Além da garantia legal, a maioria dos fabricantes oferece garantia própria que pode variar de 6
+  meses a 2 anos. Os prazos e condições específicos estão detalhados no certificado de garantia que
+  acompanha cada produto.
+  8.3 O que Não Cobre a Garantia
+  - Desgaste natural de peças (trastes, cordas, feltros, palhetas de sopro).
+  - Danos por mau uso, queda, exposição a condições climáticas extremas.
+  - Modificações ou reparos realizados por terceiros não autorizados.
+  - Danos estéticos que não afetem a funcionalidade do instrumento.
   ```
 
 </details>
 
-**🎸 Agent:** Se for o Martin D-28 do pedido nº 1, os prazos registrados para troca por defeito e garantia legal já terminaram. A política informa que alguns fabricantes oferecem garantia própria, com condições no certificado que acompanha o instrumento; a loja também pode intermediar esse contato mediante solicitação.
+**🎸 Agent:** Se o Martin D-28 do seu pedido apresentar defeito, a troca por defeito na loja era possível em até 30 dias corridos após a compra, e esse prazo encerrou em 14/11/2025. A garantia legal de 90 dias após o recebimento também encerrou em 23/01/2026.
 
-Encaminhei seu caso para um atendente verificar as opções. Protocolo: **EMP-20261125-0001**. A loja está aberta hoje até 18h.
+A maioria dos fabricantes oferece garantia própria, que pode variar de 6 meses a 2 anos; confira o certificado que veio com o instrumento para ver as condições específicas. A garantia não cobre, por exemplo, desgaste natural, mau uso, quedas, condições climáticas extremas ou reparos não autorizados.
 
 ---

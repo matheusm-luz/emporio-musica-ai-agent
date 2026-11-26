@@ -16,14 +16,14 @@
 
 <details><summary>🔧 Tools called (1)</summary>
 
-- `search_products` `{'query': 'strings guitar amplifier', 'category': None, 'min_price': None, 'max_price': None, 'include_unavailable': False, 'limit': 10}`
+- `search_products` `{'query': 'guitar strings amplifier', 'category': None, 'min_price': None, 'max_price': None, 'include_unavailable': False, 'limit': 10}`
   ```json
   {"total_encontrado": 0, "produtos": [], "observacao": "Nenhum produto disponível com esses critérios."}
   ```
 
 </details>
 
-**🎸 Agent:** Hi! I’m the virtual assistant for Empório da Música. We sell musical instruments, but not accessories like guitar strings or amplifiers. I’d be happy to help you find an instrument, though!
+**🎸 Agent:** Hi! I’m the virtual assistant for Empório da Música. We sell musical instruments, but not accessories like guitar strings or amplifiers. I’d be happy to help you find a guitar or another instrument.
 
 ---
 
@@ -33,24 +33,24 @@
 
 - `list_active_promotions` `{}`
   ```json
-  {"promocoes_ativas": [{"id": 90, "nome": "Crafter HT-100 Folk Aço Natural", "promocao": "Desconto Exclusivo", "preco_original": "R$ 2.399,00", "desconto": "18%", "preco_promocional": "R$ 1.967,18", "disponibilidade": "disponível"}, {"id": 94, "nome": "Taylor 110e Dreadnought Natural", "promocao": "Desconto Exclusivo", "preco_original": "R$ 5.999,00", "desconto": "8%", "preco_promocional": "R$ 5.519,08", "disponibilidade": "disponível"}, {"id": 121, "nome": "Ohana CK-20 Concert Natural", "promocao": "Desconto Exclusivo", "preco_original": "R$ 549,00", "desconto": "20%", "preco_promocional": "R$ …
+  {"promocoes_ativas": [{"id": 90, "nome": "Crafter HT-100 Folk Aço Natural", "promocao": "Desconto Exclusivo", "preco_original": "R$ 2.399,00", "desconto": "18%", "preco_promocional": "R$ 1.967,18", "disponibilidade": "disponível"}, {"id": 94, "nome": "Taylor 110e Dreadnought Natural", "promocao": "Desconto Exclusivo", "preco_original": "R$ 5.999,00", "desconto": "8%", "preco_promocional": "R$ 5.519,08", "disponibilidade": "disponível"}, {"id": 121, "nome": "Ohana CK-20 Concert Natural", "promocao": "Desconto Exclusivo", "preco_original": "R$ 549,00", "desconto": "20%", "preco_promocional": "R$ 439,20", "disponibilidade": "disponível"}, {"id": 127, "nome": "Kalani KAL-700T Tenor Natural", "promocao": "Oferta Especial", "preco_original": "R$ 359,00", "desconto": "10%", "preco_promocional": "R$ 323,10", "disponibilidade": "disponível"}], "regras": "Promoções não são cumulativas; desconto PIX de 5% não se aplica sobre preço promocional; sujeitas ao estoque. Somente estas promoções estão vigentes."}
   ```
 
 </details>
 
-**🎸 Agent:** Hi! There’s no Black Friday campaign listed as active, but these deals are currently available:
+**🎸 Agent:** The Black Friday campaign isn’t active in our system right now, but these instrument promotions are currently available:
 
-- Crafter HT-100 Folk Aço Natural — **R$ 1.967,18** (18% off the original R$ 2.399,00)
-- Taylor 110e Dreadnought Natural — **R$ 5.519,08** (8% off the original R$ 5.999,00)
-- Ohana CK-20 Concert Natural — **R$ 439,20** (20% off the original R$ 549,00)
-- Kalani KAL-700T Tenor Natural — **R$ 323,10** (10% off the original R$ 359,00)
+- Crafter HT-100 Folk Aço Natural: R$ 2.399,00 → **R$ 1.967,18 (18% off)**
+- Taylor 110e Dreadnought Natural: R$ 5.999,00 → **R$ 5.519,08 (8% off)**
+- Ohana CK-20 Concert Natural: R$ 549,00 → **R$ 439,20 (20% off)**
+- Kalani KAL-700T Tenor Natural: R$ 359,00 → **R$ 323,10 (10% off)**
 
-Promotions are subject to stock and can’t be combined; the 5% PIX discount doesn’t apply to promotional prices. Want details on any of these?
+Promotions aren’t cumulative, and the 5% PIX discount doesn’t apply on top of promotional prices. They’re subject to stock. Would you like details about any of these?
 
 ---
 
 **👤 Customer:** Cool. By the way, who won the last football World Cup?
 
-**🎸 Agent:** Sorry, I can only help with musical instruments and services from Empório da Música. Is there an instrument you’re looking for?
+**🎸 Agent:** I can’t help with general-knowledge questions, but I’d be happy to help you with musical instruments.
 
 ---

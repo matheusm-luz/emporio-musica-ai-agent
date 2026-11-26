@@ -14,48 +14,67 @@
 
 **👤 Customer:** Qual o endereço da loja? Vocês abrem sábado?
 
-<details><summary>🔧 Tools called (3)</summary>
+<details><summary>🔧 Tools called (2)</summary>
 
-- `search_products` `{'query': None, 'category': None, 'min_price': None, 'max_price': None, 'include_unavailable': False, 'limit': 10}`
-  ```json
-  {"total_encontrado": 61, "produtos": [{"id": 119, "nome": "Shelby SU-21S Soprano Sunburst", "categoria": "Ukuleles", "preco": "R$ 159,90", "disponibilidade": "disponível"}, {"id": 118, "nome": "Kalani KAL-300S Soprano Natural", "categoria": "Ukuleles", "preco": "R$ 179,90", "disponibilidade": "disponível"}, {"id": 116, "nome": "Kala KA-15S Soprano Mogno", "categoria": "Ukuleles", "preco": "R$ 199,90", "disponibilidade": "disponível"}, {"id": 117, "nome": "Ohana SK-10 Soprano Natural", "categoria": "Ukuleles", "preco": "R$ 249,90", "disponibilidade": "disponível"}, {"id": 127, "nome": "Kalani K …
-  ```
 - `get_store_policy` `{'topic': 'sobre_contato'}`
-  ```json
+  ```text
   Capa do manual:
-EMPÓRIO DA MÚSICA
-Sua música começa aqui.
-MANUAL DE POLÍTICAS E PROCEDIMENTOS
-Atendimento ao Cliente
-Rua 14 de Maio, 3200 — Centro
-Campo Grande – MS – CEP 79202-333
-(67) 3341-4444 — contato@emporiodamusica.com.br
-Versão 2.1 — Junho de 2025
-Documento interno — Uso restrito da equipe de atendimento
-
-## 1. Sobre a Empório da Música
-A Empório da Música é uma loja especializada em instrumentos musicais, fundada em 2008 em
-Campo Grande, Mato Grosso do Sul. Com mais de 15 anos de atuação no mercado, somos
-referência regional na venda de instrumentos para músicos iniciantes, intermediá …
+  EMPÓRIO DA MÚSICA
+  Sua música começa aqui.
+  MANUAL DE POLÍTICAS E PROCEDIMENTOS
+  Atendimento ao Cliente
+  Rua 14 de Maio, 3200 — Centro
+  Campo Grande – MS – CEP 79202-333
+  (67) 3341-4444 — contato@emporiodamusica.com.br
+  Versão 2.1 — Junho de 2025
+  Documento interno — Uso restrito da equipe de atendimento
+  
+  ## 1. Sobre a Empório da Música
+  A Empório da Música é uma loja especializada em instrumentos musicais, fundada em 2008 em
+  Campo Grande, Mato Grosso do Sul. Com mais de 15 anos de atuação no mercado, somos
+  referência regional na venda de instrumentos para músicos iniciantes, intermediários e profissionais.
+  Nosso catálogo abrange mais de 300 instrumentos de marcas nacionais e internacionais, incluindo
+  guitarras, baixos, violões, baterias, teclados, instrumentos de sopro, cordas orquestrais e ukuleles.
+  Trabalhamos exclusivamente com instrumentos musicais — não comercializamos acessórios como
+  cordas, palhetas, cabos, cases, pedais ou amplificadores.
+  1.1 Missão
+  Democratizar o acesso a instrumentos musicais de qualidade na região Centro-Oeste, oferecendo
+  atendimento especializado e preços competitivos, contribuindo para o desenvolvimento cultural e
+  musical da comunidade.
+  1.2 Dados da Empresa
+  Campo | Informação
+  Razão Social | Empório da Música Instrumentos Musicais Ltda.
+  Nome Fantasia | Empório da Música
+  CNPJ | 12.345.678/0001-90
+  Endereço | Rua 14 de Maio, 3200 — Centro, Campo Grande - MS, 79202-333
+  Telefone / WhatsApp | (67) 3341-4444
+  E-mail | contato@empóriodamusica.com.br
+  Fundação | 2008
+  
+  ## 7. Atendimento via WhatsApp (trecho)
+  O canal de WhatsApp (67) 3321-4500 é o principal meio de atendimento remoto da Empório da
+  Música. O atendimento pode ser realizado por atendentes humanos ou pelo assistente virtual.
+  
+  Observação interna: há dois números de WhatsApp (§1.2 e §7) e duas grafias do e-mail (capa e §1.2). Ao informar contatos ao cliente, apresente todos como contatos da loja, exatamente como escritos acima; não escolha um.
   ```
 - `get_store_policy` `{'topic': 'horario'}`
-  ```json
+  ```text
   ## 2. Horário de Funcionamento
-O atendimento presencial na loja segue os horários abaixo. O atendimento via WhatsApp segue o
-mesmo horário, com respostas automáticas fora do expediente.
-Dia | Horário
-Segunda a Sexta-feira | 09:00 às 18:00
-Sábado | 09:00 às 13:00
-Domingo e Feriados | Fechado
-Em datas especiais (Black Friday, Aniversário da Loja, Natal), o horário pode ser estendido.
-Alterações serão comunicadas com antecedência nas redes sociais e no atendimento via WhatsApp.
+  O atendimento presencial na loja segue os horários abaixo. O atendimento via WhatsApp segue o
+  mesmo horário, com respostas automáticas fora do expediente.
+  Dia | Horário
+  Segunda a Sexta-feira | 09:00 às 18:00
+  Sábado | 09:00 às 13:00
+  Domingo e Feriados | Fechado
+  Em datas especiais (Black Friday, Aniversário da Loja, Natal), o horário pode ser estendido.
+  Alterações serão comunicadas com antecedência nas redes sociais e no atendimento via WhatsApp.
   ```
 
 </details>
 
-**🎸 Agent:** Sou o assistente virtual da Empório da Música. A loja fica na **Rua 14 de Maio, 3200 — Centro, Campo Grande - MS, CEP 79202-333**.
+**🎸 Agent:** Olá! Sou o assistente virtual da Empório da Música. 😊
 
-Sim, abre aos sábados, das **09:00 às 13:00**. Quer ajuda com mais alguma coisa?
+A loja fica na **Rua 14 de Maio, 3200 — Centro, Campo Grande - MS, CEP 79202-333**. Aos sábados, abrimos das **09:00 às 13:00**. Posso ajudar com mais alguma coisa?
 
 ---
 
@@ -64,26 +83,49 @@ Sim, abre aos sábados, das **09:00 às 13:00**. Quer ajuda com mais alguma cois
 <details><summary>🔧 Tools called (1)</summary>
 
 - `get_store_policy` `{'topic': 'sobre_contato'}`
-  ```json
+  ```text
   Capa do manual:
-EMPÓRIO DA MÚSICA
-Sua música começa aqui.
-MANUAL DE POLÍTICAS E PROCEDIMENTOS
-Atendimento ao Cliente
-Rua 14 de Maio, 3200 — Centro
-Campo Grande – MS – CEP 79202-333
-(67) 3341-4444 — contato@emporiodamusica.com.br
-Versão 2.1 — Junho de 2025
-Documento interno — Uso restrito da equipe de atendimento
-
-## 1. Sobre a Empório da Música
-A Empório da Música é uma loja especializada em instrumentos musicais, fundada em 2008 em
-Campo Grande, Mato Grosso do Sul. Com mais de 15 anos de atuação no mercado, somos
-referência regional na venda de instrumentos para músicos iniciantes, intermediá …
+  EMPÓRIO DA MÚSICA
+  Sua música começa aqui.
+  MANUAL DE POLÍTICAS E PROCEDIMENTOS
+  Atendimento ao Cliente
+  Rua 14 de Maio, 3200 — Centro
+  Campo Grande – MS – CEP 79202-333
+  (67) 3341-4444 — contato@emporiodamusica.com.br
+  Versão 2.1 — Junho de 2025
+  Documento interno — Uso restrito da equipe de atendimento
+  
+  ## 1. Sobre a Empório da Música
+  A Empório da Música é uma loja especializada em instrumentos musicais, fundada em 2008 em
+  Campo Grande, Mato Grosso do Sul. Com mais de 15 anos de atuação no mercado, somos
+  referência regional na venda de instrumentos para músicos iniciantes, intermediários e profissionais.
+  Nosso catálogo abrange mais de 300 instrumentos de marcas nacionais e internacionais, incluindo
+  guitarras, baixos, violões, baterias, teclados, instrumentos de sopro, cordas orquestrais e ukuleles.
+  Trabalhamos exclusivamente com instrumentos musicais — não comercializamos acessórios como
+  cordas, palhetas, cabos, cases, pedais ou amplificadores.
+  1.1 Missão
+  Democratizar o acesso a instrumentos musicais de qualidade na região Centro-Oeste, oferecendo
+  atendimento especializado e preços competitivos, contribuindo para o desenvolvimento cultural e
+  musical da comunidade.
+  1.2 Dados da Empresa
+  Campo | Informação
+  Razão Social | Empório da Música Instrumentos Musicais Ltda.
+  Nome Fantasia | Empório da Música
+  CNPJ | 12.345.678/0001-90
+  Endereço | Rua 14 de Maio, 3200 — Centro, Campo Grande - MS, 79202-333
+  Telefone / WhatsApp | (67) 3341-4444
+  E-mail | contato@empóriodamusica.com.br
+  Fundação | 2008
+  
+  ## 7. Atendimento via WhatsApp (trecho)
+  O canal de WhatsApp (67) 3321-4500 é o principal meio de atendimento remoto da Empório da
+  Música. O atendimento pode ser realizado por atendentes humanos ou pelo assistente virtual.
+  
+  Observação interna: há dois números de WhatsApp (§1.2 e §7) e duas grafias do e-mail (capa e §1.2). Ao informar contatos ao cliente, apresente todos como contatos da loja, exatamente como escritos acima; não escolha um.
   ```
 
 </details>
 
-**🎸 Agent:** O manual informa dois contatos: **(67) 3341-4444** (identificado como telefone/WhatsApp) e **(67) 3321-4500** (indicado como canal principal de WhatsApp).
+**🎸 Agent:** O manual lista dois números como contato da loja: **(67) 3341-4444** e **(67) 3321-4500**.
 
 ---

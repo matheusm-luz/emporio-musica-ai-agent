@@ -23,7 +23,7 @@
 
 </details>
 
-**🎸 Agent:** Olá! Sou o assistente virtual da Empório da Música. O Takamine GD20 Dreadnought Natural está disponível por **R$ 2.199,00** ou **R$ 2.089,05 à vista no PIX**. No cartão, em até **12x de R$ 183,25 sem juros**. Quer saber mais alguma coisa sobre ele?
+**🎸 Agent:** Olá! Sou o assistente virtual da Empório da Música. O Takamine GD20 Dreadnought Natural custa **R$ 2.199,00**; no PIX, sai por **R$ 2.089,05** (5% de desconto à vista). Também dá para parcelar em **até 12x de R$ 183,25 sem juros**. Está disponível. Precisa de mais alguma informação?
 
 ---
 
@@ -38,6 +38,6 @@
 
 </details>
 
-**🎸 Agent:** Sim! O Takamine GD20 pode ser parcelado em até **12x de R$ 183,25 sem juros** no cartão. À vista no PIX, fica **R$ 2.089,05**. Quer ajuda com mais alguma coisa?
+**🎸 Agent:** Sim! O Takamine GD20 pode ser parcelado em **até 12x de R$ 183,25 sem juros**. No PIX, fica **R$ 2.089,05**, com 5% de desconto à vista. Quer saber mais alguma coisa sobre ele?
 
 ---

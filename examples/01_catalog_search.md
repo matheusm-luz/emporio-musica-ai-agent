@@ -14,20 +14,16 @@
 
 **👤 Customer:** Oi! Quais opções de violões disponíveis custando até R$1000?
 
-<details><summary>🔧 Tools called (2)</summary>
+<details><summary>🔧 Tools called (1)</summary>
 
-- `search_products` `{'query': 'violão', 'category': 'Violões', 'min_price': None, 'max_price': 1000, 'include_unavailable': False, 'limit': 10}`
+- `search_products` `{'query': None, 'category': 'violões', 'min_price': None, 'max_price': 1000, 'include_unavailable': False, 'limit': 10}`
   ```json
-  {"total_encontrado": 12, "produtos": [{"id": 83, "nome": "Tagima Memphis AC-39 Nylon Natural", "categoria": "Violões", "preco": "R$ 429,90", "disponibilidade": "disponível"}, {"id": 85, "nome": "Rozini RC-104 Nylon Estudante", "categoria": "Violões", "preco": "R$ 459,90", "disponibilidade": "disponível"}, {"id": 89, "nome": "Shelby SN-100 Folk Aço Preto", "categoria": "Violões", "preco": "R$ 549,00", "disponibilidade": "disponível"}, {"id": 88, "nome": "Giannini GF-1R Aço Folk Sunburst", "categoria": "Violões", "preco": "R$ 579,90", "disponibilidade": "disponível"}, {"id": 81, "nome": "Yamaha  …
-  ```
-- `search_products` `{'query': 'violão', 'category': 'Violões', 'min_price': None, 'max_price': 1000, 'include_unavailable': False, 'limit': 20}`
-  ```json
-  {"total_encontrado": 12, "produtos": [{"id": 83, "nome": "Tagima Memphis AC-39 Nylon Natural", "categoria": "Violões", "preco": "R$ 429,90", "disponibilidade": "disponível"}, {"id": 85, "nome": "Rozini RC-104 Nylon Estudante", "categoria": "Violões", "preco": "R$ 459,90", "disponibilidade": "disponível"}, {"id": 89, "nome": "Shelby SN-100 Folk Aço Preto", "categoria": "Violões", "preco": "R$ 549,00", "disponibilidade": "disponível"}, {"id": 88, "nome": "Giannini GF-1R Aço Folk Sunburst", "categoria": "Violões", "preco": "R$ 579,90", "disponibilidade": "disponível"}, {"id": 81, "nome": "Yamaha  …
+  {"total_encontrado": 12, "produtos": [{"id": 83, "nome": "Tagima Memphis AC-39 Nylon Natural", "categoria": "Violões", "preco": "R$ 429,90", "disponibilidade": "disponível"}, {"id": 85, "nome": "Rozini RC-104 Nylon Estudante", "categoria": "Violões", "preco": "R$ 459,90", "disponibilidade": "disponível"}, {"id": 89, "nome": "Shelby SN-100 Folk Aço Preto", "categoria": "Violões", "preco": "R$ 549,00", "disponibilidade": "disponível"}, {"id": 88, "nome": "Giannini GF-1R Aço Folk Sunburst", "categoria": "Violões", "preco": "R$ 579,90", "disponibilidade": "disponível"}, {"id": 81, "nome": "Yamaha C40 Nylon Natural", "categoria": "Violões", "preco": "R$ 599,90", "disponibilidade": "disponível"}, {"id": 84, "nome": "Giannini GN-15 Nylon Cedr Natural", "categoria": "Violões", "preco": "R$ 689,00", "disponibilidade": "disponível"}, {"id": 87, "nome": "Yamaha F310 Aço Natural", "categoria": "Violões", "preco": "R$ 699,90", "disponibilidade": "disponível"}, {"id": 86, "nome": "Tagima Dallas Tuner Aço Natural", "categoria": "Violões", "preco": "R$ 749,00", "disponibilidade": "disponível"}, {"id": 107, "nome": "Shelby SGD-195E Elétrico Aço Sunburst", "categoria": "Violões", "preco": "R$ 799,00", "disponibilidade": "disponível"}, {"id": 82, "nome": "Yamaha C70 Nylon Natural", "categoria": "Violões", "preco": "R$ 849,00", "disponibilidade": "disponível"}], "observacao": "Mostrando 10 de 12; refine a busca.", "indisponiveis_omitidos": 2}
   ```
 
 </details>
 
-**🎸 Agent:** Oi! Sou a assistente virtual da Empório da Música. Estas são as opções de violões disponíveis por até R$ 1.000:
+**🎸 Agent:** Oi! Sou o assistente virtual da Empório da Música. Encontrei estas opções de violões disponíveis por até R$ 1.000:
 
 - Tagima Memphis AC-39 Nylon Natural — R$ 429,90
 - Rozini RC-104 Nylon Estudante — R$ 459,90
@@ -39,30 +35,28 @@
 - Tagima Dallas Tuner Aço Natural — R$ 749,00
 - Shelby SGD-195E Elétrico Aço Sunburst — R$ 799,00
 - Yamaha C70 Nylon Natural — R$ 849,00
-- Tagima Woodstock Dreadnought Natural — R$ 899,00
-- Tagima TW-7 7 Cordas Aço Natural — R$ 999,00
 
-Você prefere cordas de nylon ou aço?
+A busca encontrou mais duas opções; posso refinar por nylon, aço ou elétrico para mostrar outras. Algum tipo te interessa mais?
 
 ---
 
 **👤 Customer:** Sou iniciante e prefiro cordas de nylon. Qual você indica?
 
-<details><summary>🔧 Tools called (1)</summary>
+<details><summary>🔧 Tools called (2)</summary>
 
-- `get_product_details` `{'product': 'Tagima Memphis AC-39 Nylon Natural'}`
+- `search_products` `{'query': 'nylon iniciante', 'category': 'violões', 'min_price': None, 'max_price': None, 'include_unavailable': False, 'limit': 10}`
   ```json
-  {"id": 83, "nome": "Tagima Memphis AC-39 Nylon Natural", "categoria": "Violões", "especificacoes": {"top": "Linden", "back_sides": "Linden", "neck": "Nato", "strings": "nylon", "scale": "650mm", "electronics": "no", "color": "Natural"}, "preco": "R$ 429,90", "preco_pix": "R$ 408,41 (5% de desconto à vista no PIX)", "parcelamento_cartao": "até 5x de R$ 85,98 sem juros", "disponibilidade": "disponível", "descricao": "Violão clássico com cordas de nylon, perfeito para quem está começando. Corpo leve e confortável para longas sessões de estudo.", "estoque": 15}
+  {"total_encontrado": 15, "produtos": [{"id": 83, "nome": "Tagima Memphis AC-39 Nylon Natural", "categoria": "Violões", "preco": "R$ 429,90", "disponibilidade": "disponível"}, {"id": 85, "nome": "Rozini RC-104 Nylon Estudante", "categoria": "Violões", "preco": "R$ 459,90", "disponibilidade": "disponível"}, {"id": 81, "nome": "Yamaha C40 Nylon Natural", "categoria": "Violões", "preco": "R$ 599,90", "disponibilidade": "disponível"}, {"id": 84, "nome": "Giannini GN-15 Nylon Cedr Natural", "categoria": "Violões", "preco": "R$ 689,00", "disponibilidade": "disponível"}, {"id": 82, "nome": "Yamaha C70 Nylon Natural", "categoria": "Violões", "preco": "R$ 849,00", "disponibilidade": "disponível"}, {"id": 101, "nome": "Giannini GNF-3 CEQ Elétrico Nylon Natural", "categoria": "Violões", "preco": "R$ 1.049,00", "disponibilidade": "disponível"}, {"id": 110, "nome": "Giannini GWNE-7 7 Cordas Nylon Natural", "categoria": "Violões", "preco": "R$ 1.149,00", "disponibilidade": "disponível"}, {"id": 99, "nome": "Tagima Classical Elétrico Nylon Sunburst", "categoria": "Violões", "preco": "R$ 1.199,00", "disponibilidade": "disponível"}, {"id": 109, "nome": "Rozini RV-174 7 Cordas Nylon Natural", "categoria": "Violões", "preco": "R$ 1.299,00", "disponibilidade": "disponível"}, {"id": 111, "nome": "Rozini RV-175 7 Cordas Elétrico Natural", "categoria": "Violões", "preco": "R$ 1.699,00", "disponibilidade": "disponível"}], "observacao": "Mostrando 10 de 15; refine a busca.", "indisponiveis_omitidos": 1, "itens_indisponiveis_encontrados": [{"nome": "Shelby SN-7C 7 Cordas Nylon Natural", "disponibilidade": "descontinuado"}]}
+  ```
+- `get_product_details` `{'product': 'Rozini RC-104 Nylon Estudante'}`
+  ```json
+  {"id": 85, "nome": "Rozini RC-104 Nylon Estudante", "categoria": "Violões", "especificacoes": {"top": "Spruce", "back_sides": "Sapele", "neck": "Nato", "strings": "nylon", "scale": "650mm", "electronics": "no", "color": "Natural"}, "preco": "R$ 459,90", "preco_pix": "R$ 436,91 (5% de desconto à vista no PIX)", "parcelamento_cartao": "até 5x de R$ 91,98 sem juros", "disponibilidade": "disponível", "descricao": "Violão clássico de estudo da Rozini, feito com madeiras nacionais. Acabamento caprichado e preço acessível para iniciantes.", "estoque": 10}
   ```
 
 </details>
 
-**🎸 Agent:** Para quem está começando e prefere nylon, eu indicaria o **Tagima Memphis AC-39 Nylon Natural**. É um violão clássico, descrito como leve e confortável para estudar.
+**🎸 Agent:** Para começar, eu indicaria o **Rozini RC-104 Nylon Estudante**: é um violão clássico de estudo, descrito como uma opção acessível para iniciantes, e está disponível por **R$ 459,90**. No PIX fica **R$ 436,91**; no cartão, em até **5x de R$ 91,98 sem juros**.
 
-- **Preço:** R$ 429,90
-- **No PIX:** R$ 408,41 (5% de desconto à vista)
-- **No cartão:** até 5x de R$ 85,98 sem juros
-
-Está disponível. Quer que eu compare com outra opção de nylon?
+Se quiser, também posso comparar com outras opções de nylon para iniciante.
 
 ---
