@@ -1,5 +1,32 @@
-# Postgres for LangGraph conversation checkpoints and support tickets.
-# Host port 5433 avoids clashing with a locally installed Postgres on 5432.
+# Local infrastructure. Variables are read from .env.
+#
+#   docker compose up -d                          -> Postgres only (conversation history)
+#   docker compose --profile ollama up -d         -> + Ollama on CPU (any machine; slow for big models)
+#   docker compose --profile ollama-gpu up -d     -> + Ollama on an NVIDIA GPU (Linux / Windows + WSL2)
+#
+# On macOS prefer a native Ollama install (Docker cannot use the Apple GPU).
+# Start only one of the two Ollama profiles: both publish port 11434 and share the model volume.
+
+name: emporio-agent
+
+x-ollama: &ollama
+  image: ollama/ollama:0.40.18
+  ports:
+    - "11434:11434"
+  volumes:
+    - ollama:/root/.ollama
+  environment:
+    LLM_MODEL: ${LLM_MODEL:-ollama:gemma4:12b}
+  # Serve, then pull the model configured in LLM_MODEL (only when it is an ollama:* model).
+  entrypoint:
+    - /bin/sh
+    - -c
+    - |
+      ollama serve &
+      until ollama list >/dev/null 2>&1; do sleep 1; done
+      case "$$LLM_MODEL" in ollama:*) ollama pull "$${LLM_MODEL#ollama:}" ;; esac
+      wait
+
 services:
   postgres:
     image: postgres:17-alpine
@@ -8,7 +35,7 @@ services:
       POSTGRES_PASSWORD: emporio
       POSTGRES_DB: emporio
     ports:
-      - "5433:5432"
+      - "5433:5432" # 5433 avoids clashing with a locally installed Postgres
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -17,5 +44,21 @@ services:
       timeout: 3s
       retries: 10
 
+  ollama:
+    <<: *ollama
+    profiles: ["ollama"]
+
+  ollama-gpu:
+    <<: *ollama
+    profiles: ["ollama-gpu"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
 volumes:
   pgdata:
+  ollama:
