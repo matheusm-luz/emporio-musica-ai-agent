@@ -18,11 +18,11 @@ Anything not stated in S1–S4 is an **interpretation** and is listed in [Interp
 
 | ID | Requirement | Acceptance criteria | Verified by |
 |----|-------------|---------------------|-------------|
-| R1 | Persona aligned with the store's identity and tone | Speaks as the Empório da Música virtual assistant (no invented personal name); tone per P1 | evals `persona_*`, examples |
+| R1 | Persona aligned with the store's identity and tone | Speaks as the Empório da Música virtual assistant (no invented personal name); tone per P1 | eval `r1_english_customer`, examples |
 | R2 | Receive and answer text messages using the provided context | Multi-turn chat in CLI and web UI; history persisted per session | `tests/test_graph.py`, manual check |
 | R3 | Know when to query **data** (availability, price, order status) | Price, stock and order answers always come from a tool call | evals (expected tools) |
 | R4 | Know when to query **policies** (exchanges, hours, payment) | Policy answers come from `get_store_policy` | evals (expected tools) |
-| R5 | Handle out-of-scope questions | Accessories redirected (P5); unrelated topics politely declined; prompt injection refused | evals `scope_*` |
+| R5 | Handle out-of-scope questions | Accessories redirected (P5); unrelated topics politely declined; prompt injection refused | evals `a6_accessories_out_of_scope`, `a7_off_topic`, `a7_prompt_injection_discount` |
 | R6 | Python as the main language | — | repository |
 
 ## Deliverables (S1, S4)
@@ -97,4 +97,4 @@ Anything not stated in S1–S4 is an **interpretation** and is listed in [Interp
 | N3 | Conversation history persisted in Postgres, with an in-memory fallback when no database is configured |
 | N4 | Business rules (pricing, installments, availability, privacy) are deterministic Python and unit-tested |
 | N5 | LLM behaviour (tool choice, key facts, forbidden claims) is measured by an eval suite |
-| N6 | Invariants whose violation would deceive a customer (e.g. a complaint "registered" with an invented protocol) are enforced in code, not only requested in the prompt |
+| N6 | Invariants whose violation would deceive a customer (e.g. a complaint "registered" with an invented protocol) are enforced in code, not only requested in the prompt: an unbacked claim gets one correction, then a fixed safe answer |

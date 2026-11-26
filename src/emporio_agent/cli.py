@@ -31,7 +31,7 @@ def main() -> None:
     console = Console()
 
     with open_agent(settings) as agent:
-        storage = "Postgres" if settings.database_url else "memória"
+        storage = agent.history_backend  # what is actually used, after any fallback
         console.print(
             Panel(
                 f"Empório da Música — assistente virtual\n"

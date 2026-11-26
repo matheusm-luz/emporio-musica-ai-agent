@@ -10,7 +10,7 @@ Run the eval suite for each model in `$ARGUMENTS` (default: the `LLM_MODEL` in `
 1. For an `ollama:*` model, check that Ollama is running (`ollama list`) and the model is pulled.
    For an `openai:*` model, check that `OPENAI_API_KEY` is set — never print its value.
 2. For each model run: `uv run python evals/run_evals.py --model <provider:model>`.
-   The runner freezes the clock (`AGENT_NOW`) and writes `evals/results/<model>.md`.
+   The runner freezes the clock (`DEFAULT_NOW` or a case's `now`) and writes `evals/results/<model>.md`.
 3. Report a table: model · passed/total · avg latency · failed case IDs.
 4. For every failed case, read its transcript in the results file and classify the root cause:
    wrong/missing tool call, wrong fact, forbidden claim, or tone. Propose the smallest fix

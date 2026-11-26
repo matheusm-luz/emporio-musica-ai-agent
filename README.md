@@ -11,7 +11,7 @@ Built for the Artefact **Senior AI Engineer** technical case.
 |---|---|
 | **Stack** | Python 3.12 · LangGraph · LangChain tools · Ollama (local) / OpenAI / Gemini (cloud) · Postgres · Gradio · uv |
 | **Interfaces** | Terminal chat (`emporio-chat`) and web chat (`emporio-web`) |
-| **Quality** | 78 offline unit tests · 20-case LLM eval suite run on 4 models · CI on every PR |
+| **Quality** | 85 offline unit tests · 20-case LLM eval suite run on 5 models · CI on every PR |
 | **Examples** | [`examples/`](examples/) — 5 generated conversations |
 
 ---
@@ -47,7 +47,7 @@ cp .env.example .env        # then pick ONE model option below
 | Option | `.env` | Cost | Notes |
 |--------|--------|------|-------|
 | **A. OpenAI** (fastest to set up) | `LLM_MODEL=openai:gpt-6-luna`<br>`OPENAI_API_KEY=sk-...` | paid API | "Production" model |
-| **B. Gemini free tier** (cloud, no credit card) | `LLM_MODEL=gemini:gemini-3.8-flash`<br>`GEMINI_API_KEY=...` | free | Key from [Google AI Studio](https://aistudio.google.com). On the free tier Google may use the content to improve its products — fine for this fictional data, not for real customers |
+| **B. Gemini free tier** (cloud, no credit card) | `LLM_MODEL=gemini:gemini-3.5-flash-lite`<br>`GEMINI_API_KEY=...` | free | Key from [Google AI Studio](https://aistudio.google.com). `gemini-3.8-flash` also works but often answers 503 ("high demand") on the free tier. On the free tier Google may use the content to improve its products — fine for this fictional data, not for real customers |
 | **C. Ollama in Docker** (NVIDIA GPU) | `LLM_MODEL=ollama:gemma4:12b` | free | `docker compose --profile ollama-gpu up -d` — pulls the model on first start (~8 GB) |
 | **D. Ollama in Docker** (CPU only) | `LLM_MODEL=ollama:gemma4:12b` | free | `docker compose --profile ollama up -d` — works anywhere, slow |
 | **E. Native Ollama** (best on macOS) | `LLM_MODEL=ollama:gemma4:12b` | free | [Install Ollama](https://ollama.com/download), then `ollama pull gemma4:12b` |
@@ -67,7 +67,7 @@ uv run emporio-web                                    # web chat on http://local
 Development:
 
 ```bash
-uv run pytest                                         # 78 offline unit tests (no LLM, no network)
+uv run pytest                                         # 85 offline unit tests (no LLM, no network)
 uv run python evals/run_evals.py --model <provider:model>   # LLM behaviour suite → evals/results/
 uv run python scripts/run_examples.py --model <provider:model>  # regenerate examples/
 ```
@@ -90,6 +90,7 @@ flowchart LR
         AG -->|answer| C{check_claims}
         C -->|ok| E((END))
         C -.->|unbacked claim<br/>once per turn| AG
+        C -.->|still unbacked<br/>fixed safe answer| E
     end
     G <--> CP[(Postgres<br/>checkpointer)]
     T --> D[data.py<br/>CSVs → pandas] & R[rules.py<br/>prices · installments ·<br/>availability · deadlines] & P[policies.py<br/>PDF → sections] & K[(tickets)]
@@ -104,7 +105,9 @@ flowchart LR
    and formatted — the model relays numbers, it never calculates them.
 4. **`check_claims` verifies the final answer in code:** if it says a complaint was registered or
    quotes a protocol while `create_support_ticket` did not run in that turn, the draft is dropped
-   and the model is asked once to actually do it (or not claim it).
+   and the model is asked once to actually do it (or not claim it). If the second draft still
+   claims it, a fixed safe answer (offering a human attendant) is sent instead — a false claim
+   never reaches the customer.
 
 ### Tools — when the agent uses data and when it uses policies
 
@@ -149,11 +152,13 @@ Each decision below lists the alternatives considered. The full requirement trac
 - **Cloud ("production"): OpenAI `gpt-6-luna`**, which OpenAI's model page recommends for
   cost-sensitive, high-volume workloads ($0.10 / $0.50 per 1M input/output tokens), used with
   `reasoning_effort="none"` for chat latency (on this model, Chat Completions supports function
-  calling only with that setting). `gpt-5-mini`/`gpt-5-nano` were avoided on purpose: they are
-  shut down on 2026-12-11, days after this delivery.
+  calling only with that setting) and `parallel_tool_calls=False` (with parallel calls it added an
+  empty product search next to multi-part store questions). `gpt-5-mini`/`gpt-5-nano` were avoided
+  on purpose: they are shut down on 2026-12-11, days after this delivery.
 - **Free cloud: Google Gemini (AI Studio free tier)** through its OpenAI-compatible endpoint — the
   same `ChatOpenAI` client, no extra dependency — so an evaluator can try a cloud model without a
-  GPU or a paid key. Checked alternatives: Groq's free tier (8K tokens/minute is below what a single
+  GPU or a paid key. A small subclass sends Gemini's *thought signatures* back with each tool call
+  (Gemini 3+ rejects the follow-up request without them and `langchain-openai` drops the field). Checked alternatives: Groq's free tier (8K tokens/minute is below what a single
   agent turn uses), OpenRouter `:free` models (50 requests/day), GitHub Models (retired in July 2026).
 
 ### 3.3 Retrieval architecture
@@ -206,8 +211,8 @@ order lookup without asking again).
 - **Prompts are probabilistic, so the worst failure is blocked in code.** Evals caught
   `gemma4:12b` intermittently telling a customer a complaint was registered with an invented
   protocol and deadline, even after a prompt rule against it. The `check_claims` graph node now
-  rejects such an answer unless the ticket tool really ran in that turn (unit-tested, and the
-  case passed 3/3 consecutive runs afterwards).
+  rejects such an answer unless the ticket tool really ran in that turn, asks the model once to
+  fix it, and otherwise sends a fixed safe answer (unit-tested; Portuguese and English phrasings).
 
 ---
 
@@ -215,7 +220,7 @@ order lookup without asking again).
 
 Two layers:
 
-- **Unit tests (78, offline, run in CI):** data loading and every data-quality finding, pricing and
+- **Unit tests (85, offline, run in CI):** data loading and every data-quality finding, pricing and
   installment tiers (with edge values), promotion/PIX precedence, opening-hours messages, policy
   parsing, manual ↔ code consistency, order privacy, and the agent loop with a scripted chat model.
 - **LLM eval suite** ([`evals/cases.json`](evals/cases.json), 20 cases traced to SPEC IDs): the
@@ -225,21 +230,22 @@ Two layers:
   English-speaking customer. Each case checks the tools called, facts that must appear and claims
   that must not appear. Clock frozen at Wed 25/11/2026 10:00.
 
-### Results (final prompt and graph, one full run per model)
+### Results (final code, one full run per model)
 
 | Model | Runs on | Passed | Median time / case | Failed case in this run |
 |-------|---------|--------|--------------------|-------------------------|
-| `openai:gpt-6-luna` | OpenAI API | **20/20** | 3.4 s | — |
-| `ollama:gemma4:12b` — **default local** (8 GB) | RTX 5080 16 GB | 19/20 | 2.8 s | `a4_regret_identified_customer`: correct answer (deadline computed by the order tool) but skipped the policy lookup the case requires |
-| `ollama:gpt-oss:20b` (14 GB) | RTX 5080 16 GB | 19/20 | 2.5 s | `p9_promo_installments`: installments quoted without the promotional price |
-| `ollama:qwen3:14b` (9 GB) | RTX 5080 16 GB | 18/20 | 5.7 s | both return-request cases: generic policy answer without looking up the order |
-| `gemini:gemini-3.8-flash` | Google AI Studio free tier | not run | — | requires a `GEMINI_API_KEY`; the preset is unit-tested only |
+| `openai:gpt-6-luna` | OpenAI API | **20/20** | 3.5 s | — |
+| `ollama:gemma4:12b` — **default local** (8 GB) | RTX 5080 16 GB | **20/20** | 3.3 s | — |
+| `ollama:gpt-oss:20b` (14 GB) | RTX 5080 16 GB | 18/20 | 2.1 s | `p9_promo_installments`: installments quoted without the promotional price (fails in most runs); `a4_regret_needs_identification`: generic policy answer without asking who the customer is (passed 4/4 re-runs) |
+| `ollama:qwen3:14b` (9 GB) | RTX 5080 16 GB | 18/20 | 6.4 s | `a4_regret_identified_customer`: answered without looking up the order; `a4_regret_needs_identification`: did not ask for identification |
+| `gemini:gemini-3.5-flash-lite` | Google AI Studio free tier | **20/20** | 5.6 s | — (`gemini-3.8-flash` not evaluated: the free tier answered 503 "high demand" during the whole run day) |
 
 Full reports with the transcripts of every failed case: [`evals/results/`](evals/results/).
 
 **Why `gemma4:12b` is the default local model:** the smallest footprint (8 GB — fits common GPUs),
 top or tied-top pass rate in every run, and low latency. `gpt-oss:20b` has similar quality but
-needs 14 GB; `qwen3:14b` repeatedly skipped order lookups and is ~2× slower (thinking mode).
+needs 14 GB and keeps dropping the promotional price; `qwen3:14b` repeatedly skipped order lookups
+and is ~2× slower (thinking mode).
 Single runs vary — a case can flip between runs — which is why the most damaging failure mode
 (invented ticket protocols) is blocked in code rather than left to the prompt (§3.7).
 
@@ -290,6 +296,8 @@ it (full list: [SPEC — Interpretations](docs/SPEC.md#interpretations-and-assum
 | Tickets are stored, not routed | Push tickets to the store's helpdesk / notify the team |
 | Single process, one Postgres connection | Containerise the app, connection pool, deploy (e.g. Cloud Run) behind a WhatsApp Business webhook |
 | No guardrail model | Add input/output moderation and PII redaction in logs |
+| The claim check (`check_claims`) is pattern-based: it covers the Portuguese and English phrasings seen so far, not every paraphrase | Structured output for the final answer (a `claims_action` flag checked against the tool log) |
+| Wording details still vary by run: e.g. the agent may say "recebido em" for the estimated delivery date used as the receipt date (SPEC I5), or mention "o manual" | A tone/fidelity LLM-as-judge in the eval suite; an actual delivery date in the order data |
 | Data is static CSV | Replace `data.py` with a repository over the store's real database / ERP |
 
 ---
@@ -313,11 +321,11 @@ toolkit (e.g. GitHub Spec Kit, too much ceremony for a 2.5-day case):
    persistence, interface, language, git workflow. My choices differed from its recommendation
    in three places (LangGraph over a plain SDK loop, Postgres over SQLite, adding a web UI).
 2. **Spec as the contract.** [`docs/SPEC.md`](docs/SPEC.md) traces every requirement to its source
-   with an ID (R*, D*, P*, A*, I*), and every interpretation is written down. Tests, evals and the
+   with an ID (R*, D*, P*, A*, I*, N*), and every interpretation is written down. Tests, evals and the
    auditor below refer to these IDs.
 3. **Harness — deterministic checks around the AI's output** ([`.claude/`](.claude/), [`CLAUDE.md`](CLAUDE.md)):
    - `CLAUDE.md`: project rules (sources of truth, never modify `data/`, rules in code not prompt…).
-   - **Hooks:** every file Claude edits is formatted and linted (`ruff`); lint errors it cannot fix
+   - **Hooks:** every Python file Claude edits is formatted and linted (`ruff`); lint errors it cannot fix
      are fed back to Claude immediately. A *Stop* hook blocks Claude from ending a turn while unit
      tests fail.
    - **Source-integrity test:** checksums guarantee the provided data is never modified.
@@ -342,6 +350,19 @@ toolkit (e.g. GitHub Spec Kit, too much ceremony for a 2.5-day case):
      assertion that matched wording instead of intent) → fixed in the harness, documented in the
      commit messages, never by weakening what the case verifies.
 
+6. **Review of the examples + audit before submission.** Reading the generated conversations and
+   running the `spec-auditor` found issues the eval assertions did not catch, all fixed at the
+   root cause and then asserted in the example generator: the agent silently picked one of the
+   manual's two WhatsApp numbers (SPEC I12 → the policy tool now flags the divergence); it opened
+   a support ticket for a hypothetical question and paraphrased "a maioria dos fabricantes" as
+   "alguns" (→ prompt); `gpt-6-luna` added an empty product search to multi-part questions
+   (→ `parallel_tool_calls=False`); a second false "registered" draft could still reach the
+   customer (→ fixed safe answer); missing manual ↔ code tests for deadlines, SLA and installment
+   tiers (→ added); the CLI reported Postgres history after falling back to memory (→ fixed).
+   Running the Gemini preset end to end (until then only unit-tested) showed that every
+   tool-using conversation failed with HTTP 400 — Gemini 3+ requires its thought signatures back
+   (→ `GeminiChatOpenAI` subclass + unit tests, then the full suite: 20/20).
+
 What I reviewed by hand: the spec and interpretations, every data-quality decision, tool outputs
 against the CSVs/manual (prices, deadlines), the prompt, and every example transcript.
 
@@ -358,11 +379,11 @@ src/emporio_agent/
   tools.py       the six agent tools (pure functions + LangChain wrappers)
   tickets.py     support tickets (Postgres / in-memory)
   prompts.py     system prompt
-  llm.py         model factory (ollama:* / openai:*)
+  llm.py         model factory (ollama:* / openai:* / gemini:*)
   graph.py       LangGraph agent ⇄ tools loop
   agent.py       StoreAgent facade + persistence selection
   cli.py, web.py interfaces
-tests/           78 offline unit tests
+tests/           85 offline unit tests
 evals/           LLM eval suite + results per model
 examples/        generated example conversations
 scripts/         example generator

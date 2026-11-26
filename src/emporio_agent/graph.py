@@ -35,7 +35,14 @@ from langgraph.types import Command
 MAX_HISTORY_MESSAGES = 40
 TICKET_TOOL = "create_support_ticket"
 CLAIM_PATTERN = re.compile(
-    r"protocolo|registrei|registrad[ao]|reclama[çc][ãa]o (foi )?(aberta|criada)", re.IGNORECASE
+    r"protocolo|registrei|registrad[ao]|reclama[çc][ãa]o (foi )?(aberta|criada)|encaminhei|"
+    r"transferi|protocol\b|registered|I(?:'ve| have) (?:forwarded|opened|created)",
+    re.IGNORECASE,
+)
+# Sent instead of a draft that still claims an action after one correction (SPEC N6).
+SAFE_FALLBACK = (
+    "Desculpe, não consegui concluir esse registro agora. Posso encaminhar seu caso para um "
+    "atendente humano — quer que eu faça isso?"
 )
 CORRECTION = (
     "Your previous draft told the customer that a complaint/ticket was registered or quoted a "
@@ -101,7 +108,9 @@ def build_graph(
     def check_claims(state: AgentState) -> Command[Literal["agent", "__end__"]]:
         messages = state["messages"]
         turn_number = sum(isinstance(m, HumanMessage) for m in messages)
-        if has_unbacked_claim(messages) and state.get("corrected_turn") != turn_number:
+        if not has_unbacked_claim(messages):
+            return Command(goto=END)
+        if state.get("corrected_turn") != turn_number:
             return Command(
                 goto="agent",
                 update={
@@ -110,7 +119,13 @@ def build_graph(
                     "corrected_turn": turn_number,
                 },
             )
-        return Command(goto=END)
+        # Still unbacked after one correction: never deliver it, send a fixed safe answer.
+        return Command(
+            goto=END,
+            update={
+                "messages": [RemoveMessage(id=messages[-1].id), AIMessage(content=SAFE_FALLBACK)]
+            },
+        )
 
     builder = StateGraph(AgentState)
     builder.add_node("agent", agent)
