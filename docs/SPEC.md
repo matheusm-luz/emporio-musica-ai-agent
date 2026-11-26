@@ -86,13 +86,15 @@ Anything not stated in S1–S4 is an **interpretation** and is listed in [Interp
 | I10 | Active promotion | A promotion is active only when `is_active = 1`; the campaign calendar in S2 §6.1 is informational |
 | I11 | Holidays | No holiday calendar in the sources → not modelled (known limitation) |
 | I12 | Conflicting contacts | S2 lists two WhatsApp numbers (§1.2 and §7) and two spellings of the e-mail → shown as written in the manual, not silently picked |
+| I13 | Free-tier data usage | Gemini's free tier may use prompts to improve Google products. Acceptable for this case's fictional data; real customer data (LGPD) requires a paid tier or a local model |
 
 ## Non-functional requirements
 
 | ID | Requirement |
 |----|-------------|
 | N1 | KISS: no component without a requirement behind it |
-| N2 | Runs with a free local model (Ollama) or OpenAI by configuration only — one code path |
+| N2 | Runs with a free local model (Ollama), a free cloud tier (Gemini, no credit card) or OpenAI (paid) by configuration only — one code path; the default local model is chosen by the eval suite |
 | N3 | Conversation history persisted in Postgres, with an in-memory fallback when no database is configured |
 | N4 | Business rules (pricing, installments, availability, privacy) are deterministic Python and unit-tested |
 | N5 | LLM behaviour (tool choice, key facts, forbidden claims) is measured by an eval suite |
+| N6 | Invariants whose violation would deceive a customer (e.g. a complaint "registered" with an invented protocol) are enforced in code, not only requested in the prompt |
