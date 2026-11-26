@@ -88,6 +88,44 @@ def test_customer_identified_by_channel_is_in_the_prompt() -> None:
     assert "Customer identified by the channel: Pedro" in model.received[0][0].text
 
 
+def test_unbacked_ticket_claim_is_corrected_once() -> None:
+    """A draft that invents a protocol is discarded and the model is asked to really do it."""
+    ticket_call = {
+        "name": "create_support_ticket",
+        "args": {"kind": "reclamacao", "summary": "Atraso", "customer_contact": "x"},
+        "id": "call-t",
+    }
+    agent, model = _agent(
+        [
+            AIMessage(content="Já registrei sua reclamação, protocolo #928374."),  # fabricated
+            AIMessage(content="", tool_calls=[ticket_call]),
+            AIMessage(content="Reclamação registrada: protocolo EMP-20261125-0001."),
+        ]
+    )
+    reply = agent.reply("thread-c", "Quero registrar uma reclamação!")
+
+    assert [c.name for c in reply.tool_calls] == ["create_support_ticket"]
+    assert reply.text == "Reclamação registrada: protocolo EMP-20261125-0001."
+    assert "create_support_ticket was NOT called" in model.received[1][-1].text
+    history = [text for _, text in agent.history("thread-c")]
+    assert not any("928374" in text for text in history)  # the false draft is not persisted
+
+
+def test_claim_check_does_not_loop() -> None:
+    agent, model = _agent(
+        [AIMessage(content="Protocolo #1."), AIMessage(content="Protocolo #2, de novo.")]
+    )
+    reply = agent.reply("thread-d", "Quero reclamar")
+    assert reply.text == "Protocolo #2, de novo."  # one correction per turn, then it stops
+    assert len(model.received) == 2
+
+
+def test_answer_without_claims_ends_normally() -> None:
+    agent, model = _agent([AIMessage(content="Abrimos de segunda a sexta.")])
+    assert agent.reply("thread-e", "Que horas abrem?").text == "Abrimos de segunda a sexta."
+    assert len(model.received) == 1
+
+
 def test_recent_history_never_starts_with_an_orphan_tool_result() -> None:
     call = {"name": "x", "args": {}, "id": "c"}
     messages = [
